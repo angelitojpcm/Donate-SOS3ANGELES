@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
-
+  
 // Get all donations
 export async function GET() {
   try {
