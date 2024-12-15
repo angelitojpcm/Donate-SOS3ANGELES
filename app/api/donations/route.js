@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import db from "@/lib/db";
+import { query } from "@/lib/db";
 
 // Get all donations
 export async function GET() {
   try {
-    const [rows] = await db.query("SELECT * FROM donations");
+    const [rows] = await query("SELECT * FROM donations");
     return NextResponse.json(rows);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -17,7 +17,7 @@ export async function POST(request) {
     const data = await request.json();
     const { amount, donor_name, email } = data;
 
-    const [result] = await db.query(
+    const [result] = await query(
       "INSERT INTO donations (amount, donor_name, email) VALUES (?, ?, ?)",
       [amount, donor_name, email]
     );
