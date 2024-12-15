@@ -26,13 +26,12 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const { is_active: isMaintenanceMode, message } =
-    await getMaintenanceStatus();
+  const data = await getMaintenanceStatus();
 
   let HTML = ``;
 
-  if (isMaintenanceMode) {
-    HTML = <MaintenancePage message={message} />;
+  if (data) {
+    HTML = <MaintenancePage message={data.message} endTime={data.end_time} />;
   } else {
     HTML = (
       <Providers>
