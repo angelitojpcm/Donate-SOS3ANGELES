@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import pool from '@/lib/db';
+import db from '@/lib/db';
 
 export async function POST(request) {
   try {
@@ -15,7 +15,7 @@ export async function POST(request) {
     }
 
     // Check if user already exists
-    const [existingUsers] = await pool.query(
+    const [existingUsers] = await db.query(
       'SELECT * FROM users WHERE email = ?',
       [email]
     );
@@ -31,7 +31,7 @@ export async function POST(request) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create user
-    const [result] = await pool.query(
+    const [result] = await db.query(
       'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
       [name, email, hashedPassword]
     );

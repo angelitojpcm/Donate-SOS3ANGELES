@@ -1,8 +1,14 @@
 "use client";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useEffect } from "react";
 
 export default function MaintenancePage() {
+  //Cambiar el titulo de la página
+  useEffect(() => {
+    document.title = "Página en Mantenimiento - SOS 3Ángeles";
+  }, []);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100">
       <div className="container px-4 py-8">

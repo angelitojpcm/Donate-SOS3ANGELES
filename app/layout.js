@@ -17,8 +17,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "SOS 3 Ángeles",
-  description: "Plataforma de donaciones SOS 3 Ángeles",
+  title: {
+    default: "SOS 3Ángeles",
+    template: (title) => `${title} | SOS 3Ángeles - Plataforma de Donaciones`,
+    absolute: "SOS 3Ángeles - Plataforma de Donaciones",
+  },
+  description: "Plataforma de donaciones SOS 3Ángeles",
 };
 
 export default async function RootLayout({ children }) {
