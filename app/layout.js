@@ -28,28 +28,24 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   const data = await getMaintenanceStatus();
 
-  let HTML = ``;
-
-  if (data) {
-    HTML = <MaintenancePage message={data.message} endTime={data.end_time} />;
-  } else {
-    HTML = (
-      <Providers>
-        <main className="min-h-screen bg-white">
-          <Navbar />
-          {children}
-          <Footer />
-        </main>
-      </Providers>
-    );
-  }
+  let content = data ? (
+    <MaintenancePage message={data.message} endTime={data.end_time} />
+  ) : (
+    <Providers>
+      <main className="min-h-screen bg-white">
+        <Navbar />
+        {children}
+        <Footer />
+      </main>
+    </Providers>
+  );
 
   return (
     <html lang="es">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {HTML}
+        {content}
       </body>
     </html>
   );

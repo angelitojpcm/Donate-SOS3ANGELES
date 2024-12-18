@@ -2,9 +2,11 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { RainEffect, RainSound } from "./Rain";
 
 export default function MaintenancePage({ message, endTime }) {
   const [timeLeft, setTimeLeft] = useState({
+    days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
@@ -21,6 +23,7 @@ export default function MaintenancePage({ message, endTime }) {
         if (diff <= 0) {
           clearInterval(timer);
           setTimeLeft({
+            days: 0,
             hours: 0,
             minutes: 0,
             seconds: 0,
@@ -29,11 +32,15 @@ export default function MaintenancePage({ message, endTime }) {
           return;
         }
 
-        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
         setTimeLeft({
+          days,
           hours,
           minutes,
           seconds,
@@ -46,8 +53,18 @@ export default function MaintenancePage({ message, endTime }) {
   }, [endTime]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100">
-      <div className="container px-4 py-8">
+    <div
+      className="min-h-screen flex items-center justify-center relative"
+      style={{
+        backgroundImage: "url('/assets/img/backgrounds/vidanocampo.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="absolute inset-0 bg-black/80" />
+      <RainEffect />
+      <RainSound />
+      <div className="container px-4 py-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -65,16 +82,15 @@ export default function MaintenancePage({ message, endTime }) {
           </div>
 
           <motion.h1
-            className="text-4xl md:text-5xl font-bold text-primary-900 mb-6"
+            className="text-4xl md:text-5xl font-bold text-white mb-6"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
             Sitio en Mantenimiento
           </motion.h1>
-
           <motion.p
-            className="text-xl text-gray-600 mb-8 leading-relaxed"
+            className="text-xl text-white/80 mb-8 leading-relaxed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
@@ -89,8 +105,17 @@ export default function MaintenancePage({ message, endTime }) {
               animate={{ opacity: 1, scale: 1 }}
               className="mb-8"
             >
-              <p className="text-lg text-gray-600 mb-4">Volveremos en:</p>
+              <p className="text-lg text-white/70 mb-4">Volveremos en:</p>
               <div className="flex justify-center gap-4">
+                <motion.div
+                  className="bg-white p-4 rounded-xl shadow-md"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <span className="text-3xl font-bold text-primary-600">
+                    {String(timeLeft.days).padStart(2, "0")}
+                  </span>
+                  <p className="text-sm text-gray-500">días</p>
+                </motion.div>
                 <motion.div
                   className="bg-white p-4 rounded-xl shadow-md"
                   whileHover={{ scale: 1.05 }}
@@ -146,11 +171,13 @@ export default function MaintenancePage({ message, endTime }) {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
-            <p className="text-gray-600">Para consultas urgentes:</p>
+            <p className="text-white/90">Para consultas urgentes:</p>
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
               <a
                 href="mailto:soporte@sos3angeles.org"
-                className="flex items-center gap-2 text-primary-600 hover:text-primary-700 transition-all hover:scale-105"
+                className="flex items-center gap-2 
+                text-white/80 hover:text-white
+                transition-all hover:scale-105"
               >
                 <svg
                   className="w-5 h-5"
@@ -170,7 +197,9 @@ export default function MaintenancePage({ message, endTime }) {
               <span className="hidden md:inline text-gray-300">|</span>
               <a
                 href="tel:+593996930230"
-                className="flex items-center gap-2 text-primary-600 hover:text-primary-700 transition-all hover:scale-105"
+                className="flex items-center gap-2 
+                text-white/80 hover:text-white
+                transition-all hover:scale-105"
               >
                 <svg
                   className="w-5 h-5"
